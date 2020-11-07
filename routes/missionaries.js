@@ -16,6 +16,21 @@ router.get('/get-missionaries', async function(req, res, next) {
     }
 });
 
+router.get('/search-missionaries', async function(req, res, next) {
+    try {
+      const missionary = req.query;
+      console.log(missionary);
+      const regex = new RegExp(missionary.name, 'i')
+      const missionaries = await Missionary.find({$or: [{name: {$regex: regex}}, {continent: missionary.continent}, {country: missionary.country}]});
+      res.status(200).json(missionaries);
+  } catch (err) {
+      res.status(404),json({ 
+        status: 'fail',
+        message: err
+    });
+  }
+});
+
 router.post('/add', async function(req, res, next) {
     try {
         const newMissionary = await Missionary.create(req.body);
@@ -34,10 +49,8 @@ router.post('/add', async function(req, res, next) {
 router.get('/:id', async function(req, res, next) {
     try {
         let id = req.params.id;
-        const oneMissionary = await Missionary.findById(id);
-        res.status(200).json({
-            data: { oneMissionary }
-        });
+        const missionary = await Missionary.findById(id);
+        res.status(200).json({ missionary });
     } catch (err) {
         res.status(404).json({
             status: 'fail',
