@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { has } = require('mongoose/lib/helpers/specialProperties');
+// const { has } = require('mongoose/lib/helpers/specialProperties');
 
 var authService = {
     signUser: function(user) {
