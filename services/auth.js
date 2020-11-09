@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-// const { has } = require('mongoose/lib/helpers/specialProperties');
+const { has } = require('mongoose/lib/helpers/specialProperties');
+const UserInfo = require('../models/UserInfo');
+const db = require('../models/UserInfo');
+
 
 var authService = {
     signUser: function(user) {
@@ -12,7 +15,7 @@ var authService = {
             },
             'secretkey',
             {
-                expresIn: '1h'
+                expiresIn: '1h'
             },
             (err, token) => {
                 if (err) throw err;
@@ -22,16 +25,27 @@ var authService = {
             }
         );
     }
-}
+};
 
-// verifyUser: function (token) {  //<--- receive JWT token as parameter
-//     try {
-//       let decoded = jwt.verify(token, 'secretkey'); //<--- Decrypt token using same key used to encrypt
-//       return models.users.findByPk(decoded.UserId); //<--- Return result of database query as promise
-//     } catch (err) {
-//       console.log(err);
-//       return null;
+
+// db.users('users').findOne (
+//     { 
+//             username: req.body.username,
+//             password: req.body.password 
+//     },
+//     function(err, user) {
+//         if(err) {
+//             console.log('Error response')
+//             res.json(err)
 //     }
-//   }
+//     if (user && user.password === req.body.password) {
+//         console.log('User and password is correct')
+//         res.json(user);
+//     } else {
+//         console.log('Credentials are invalid');
+//         res.json({ data: 'Invalid login!'});
+//     }
+// })
+  
 
 module.exports = authService;

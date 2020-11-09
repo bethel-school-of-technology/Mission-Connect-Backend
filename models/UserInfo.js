@@ -2,24 +2,24 @@ const mongoose = require('mongoose');
 
  var UserInfoSchema = new mongoose.Schema({
      info: {
-            userId: Number,
-            firstName: {
+            _id: Number,
+            FirstName: {
                 type: String,
                 required: true
             },
-            lastName: {
+            LastName: {
                 type: String,
                 required: true
             },
-            email: {
+            Email: {
                 type: String,
                 required: true
             },
-            username: {
+            Username: {
                 type: String, 
                 required: true
             },
-            password: {
+            Password: {
                 type: String,
                 required: true
             },
@@ -30,5 +30,15 @@ const mongoose = require('mongoose');
          }
  });
  
+//  const jwt = require('jsonwebtoken');
+// UserInfoSchema.methods.generateToken = function(cb){
+//     var user = this;
+//     var token = jwt.sign(user.id.toHexString(),process.env.SECRET)
+//     user.token = token;
+//     user.save(function(err,user){
+//         if(err) return cb(err);
+//         cb(null,user);
+//     })
+// };
 
-module.exports = mongoose.model('UserInfo', UserInfoSchema);
+module.exports = mongoose.model('users', UserInfoSchema);
