@@ -3,11 +3,22 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var missionariesRouter = require('./routes/missionaries');
+const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
+var cors = require('cors');
+var bodyParser = require('body-parser');
 
+//DB config
+const db = require('./config/keys').MongoURI;
+
+//connect to Mongo
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log('MongoDB connected...'))
+.catch(err => console.log(err));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var missionariesRouter = require('./routes/missionaries');
 
 var app = express();
 
@@ -20,6 +31,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(cors());
+app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
